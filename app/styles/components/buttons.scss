@@ -1,0 +1,26 @@
+.button {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: .20rem 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1rem;
+    svg{
+        margin-right: .5em;
+        height: 1.25em;
+        width: auto;
+    }
+   &--primary{
+    border-style: none;
+    background: $gradient--primary;
+    color: white;
+   }
+   &--secondary{
+    color: $color-primary;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: $gradient--primary;
+   }
+}
