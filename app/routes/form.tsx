@@ -1,58 +1,28 @@
 import { useFetcher } from "@remix-run/react";
 import { ResumeData } from "resume-parser";
-export default function Index() {
-    let { submit, isUploading, data } = useFileUpload();
-    const resumeData = data as ResumeData;
-    if(resumeData){
-        console.log(JSON.parse(resumeData?.jsonData))
-    }
-    let { name, email, phone, technology, experience, skills, education, objective, summary, languages } = resumeData ? JSON.parse(resumeData?.jsonData) : {};
+import {getSession, commitSession} from "../utils/resume-session";
+
+export default async function Index(request) {
+  let { submit, isUploading, data, resume} = useFileUpload();
+     // Fetch session data if `data` is not available
+  const fetchSessionData = async () => {
+    return await getSession(request.headers.get("Cookie"));
+  };
+
+  // Conditionally set resumeData based on whether `data` is available
+  const resumeData = data || (await fetchSessionData());
+
   return (
     <div>
       <h1>Upload Your Resume</h1>
-      <input type="file" name="resume" onChange={(event) => submit(event.currentTarget.files)}
- />
+      <input type="file" name="resume" onChange={(event) => submit(event.currentTarget.files)}/>
          {isUploading ? <p>Parsing Resume...</p> : <p>Edit your resume, or upload a new resume</p>}
-
-
-      {resumeData && (
-        <div>
-          <h2>Extracted Data</h2>
-          name: {name}
-          <br/>
-          <br/>
-
-          email: {email}
-          <br/>
-          <br/>
-
-          phone: {phone}
-          <br/>
-          <br/>
-
-          objective: { objective || summary}
-          <br/>
-          <br/>
-
-          technology: { technology }
-          <br/>
-          <br/>
-
-          skills: { skills }
-          <br/>
-          <br/>
-
-          experience: { experience }
-          <br/>
-          <br/>
-
-          languages: { languages }
-          <br/>
-          <br/>
-          education: { education }
-
-        </div>
-      )}
+        {resumeData && (
+            <form className="flex flex-col">
+                {resumeData && getAllProps(JSON.parse(resumeData?.jsonData))}
+                <button type="submit" className="button button--primary mr-auto mt-3">Update</button>
+            </form>
+        )}
     </div>
   );
 }
@@ -66,8 +36,6 @@ function useFileUpload() {
       ?.filter((value: unknown): value is File => value instanceof File)
       .map((file) => {
         let name = file.name;
-        // This line is important, this will create an Object URL, which is a `blob:` URL string
-        // We'll need this to render the image in the browser as it's being uploaded
         let url = URL.createObjectURL(file);
         return { name, url };
       });
@@ -85,4 +53,26 @@ function useFileUpload() {
       isUploading,
       resume,
     };
+  }
+
+  function handleExtractedData(data: ResumeData) {
+    // convert comma separated lists to arrays
+    // save to session storage
+  }
+
+  function getAllProps(obj : any) {  
+     return Object.keys(obj).map(key => {
+        return (
+            <label htmlFor={key} key={key} className="flex flex-col">
+                <span className="capitalize">{key}</span>
+                {key === "name" || key === "email" || key === "phone" ? 
+                (                <input key={key} type="text" name={key} defaultValue={obj[key]} />
+                ) : (
+                    <textarea key={key} name={key} defaultValue={obj[key]} />
+                )
+                }
+
+            </label>
+          );
+      });  
   }

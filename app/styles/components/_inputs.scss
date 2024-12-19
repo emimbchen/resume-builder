@@ -1,0 +1,13 @@
+input[type=text], textarea{
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: .5rem 1rem;
+    &:focus-visible{
+        outline:  $color-primary 3px double;
+        border: 1px solid transparent;
+    }
+}

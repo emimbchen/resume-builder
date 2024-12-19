@@ -12,31 +12,6 @@ const Header: React.FC = () => {
                 <Link to="/">      
                     <img src={Logo} alt="Resume Tailor" width="200px" />
                 </Link>
-                {/* <nav>
-                    <ul className='flex gap-x-3 text-black text-lg'>
-                        <li>
-                            <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                isActive ? activeBtnStyle : ""
-                            }
-                            >
-                            Home
-                            </NavLink>
-                        </li>
-                        <li>
-                        <NavLink
-                            to="/content"
-                            className={({ isActive }) =>
-                                isActive ? activeBtnStyle : ""
-                            }
-                            >
-                            My Experience
-                            </NavLink>
-                        </li>
-                 
-                    </ul>
-                </nav> */}
                 <div className='flex gap-x-3'>
                     <button className='button--secondary button'>Log in</button>
                     <button className='button--primary button'>Sign up</button>

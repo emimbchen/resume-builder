@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ScrollRestoration />
       <Scripts />
         <Header />
-        <div className="container h-full py-8">
+        <div className="container h-full py-8 flex-1">
         {children}
         </div>
         <Footer/>
